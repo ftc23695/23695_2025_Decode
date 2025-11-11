@@ -53,25 +53,59 @@ public class SimpleTest extends OpMode
         double rightBackPower;
 
 
-        double drive = -gamepad1.left_stick_y;
-        double strafe = gamepad1.left_stick_x;
-        double turn = gamepad1.right_stick_x;
-        leftFrontPower = Range.clip(drive + turn + strafe, -1, 1);
-        rightFrontPower = Range.clip(drive - turn - strafe, -1, 1);
-        leftBackPower = Range.clip(drive + turn - strafe, -1, 1);
-        rightBackPower = Range.clip(drive - turn + strafe, -1, 1);
+        boolean forward = gamepad1.dpad_up;
+        boolean right = gamepad1.dpad_right;
+        boolean left = gamepad1.dpad_left;
+        boolean back = gamepad1.dpad_down;
+        boolean divider = gamepad1.left_bumper;
 
-        if(gamepad1.right_bumper){
-            leftFrontPower /= 2;
-            leftBackPower /= 2;
-            rightFrontPower /= 2;
-            rightBackPower /= 2;
+        //drive code
+
+        if (forward){
+            leftFrontDrive.setPower(1);
+            rightFrontDrive.setPower(1);
+            leftBackDrive.setPower(1);
+            rightBackDrive.setPower(1);
+        } else if (forward && divider) {
+            leftFrontDrive.setPower(0.5);
+            rightFrontDrive.setPower(0.5);
+            leftBackDrive.setPower(0.5);
+            rightBackDrive.setPower(0.5);
+        }
+        if (back){
+            leftFrontDrive.setPower(-1);
+            rightFrontDrive.setPower(-1);
+            leftBackDrive.setPower(-1);
+            rightBackDrive.setPower(-1);
+        } else if (back && divider){
+            leftFrontDrive.setPower(-0.5);
+            rightFrontDrive.setPower(-0.5);
+            leftBackDrive.setPower(-0.5);
+            rightBackDrive.setPower(-0.5);
+        }
+        if (left && !forward && !back){
+            leftFrontDrive.setPower(1);
+            rightFrontDrive.setPower(-1);
+            leftBackDrive.setPower(1);
+            rightBackDrive.setPower(-1);
+        } else if (left && divider && !forward && !back){
+            leftFrontDrive.setPower(0.5);
+            rightFrontDrive.setPower(-0.5);
+            leftBackDrive.setPower(0.5);
+            rightBackDrive.setPower(-0.5);
+        }
+        if (right && !forward && !back){
+            leftFrontDrive.setPower(-1);
+            rightFrontDrive.setPower(1);
+            leftBackDrive.setPower(-1);
+            rightBackDrive.setPower(1);
+        } else if (right && divider && !forward && !back){
+            leftFrontDrive.setPower(-0.5);
+            rightFrontDrive.setPower(0.5);
+            leftBackDrive.setPower(-0.5);
+            rightBackDrive.setPower(0.5);
         }
 
-        leftFrontDrive.setPower(leftFrontPower);
-        rightFrontDrive.setPower(rightFrontPower);
-        leftBackDrive.setPower(leftBackPower);
-        rightBackDrive.setPower(rightBackPower);
 
         //Claw Code: Opens with GP2 X and opens less when past vertical position
         // BIGGER CLOSES MORE*********************
