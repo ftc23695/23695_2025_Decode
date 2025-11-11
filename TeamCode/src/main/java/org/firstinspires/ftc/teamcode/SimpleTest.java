@@ -47,11 +47,7 @@ public class SimpleTest extends OpMode
     //Set variables//
     @Override
     public void loop() {
-        double leftFrontPower;
-        double rightFrontPower;
-        double leftBackPower;
-        double rightBackPower;
-
+        
 
         boolean forward = gamepad1.dpad_up;
         boolean right = gamepad1.dpad_right;
