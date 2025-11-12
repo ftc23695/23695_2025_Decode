@@ -47,7 +47,7 @@ public class SimpleTest extends OpMode
     //Set variables//
     @Override
     public void loop() {
-        
+
 
         boolean forward = gamepad1.dpad_up;
         boolean right = gamepad1.dpad_right;
