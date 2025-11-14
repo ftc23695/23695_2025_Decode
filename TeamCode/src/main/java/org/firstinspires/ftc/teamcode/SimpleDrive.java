@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
@@ -21,7 +22,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
         private DcMotor leftBackDrive = null;
         private DcMotor rightFrontDrive = null;
         private DcMotor rightBackDrive = null;
-        private DcMotor shooter = null;
+        private DcMotorEx shooter = null;
         private DcMotor intake = null;
 
 
@@ -35,7 +36,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
             rightFrontDrive = hardwareMap.get(DcMotor.class, "right_front");
             leftBackDrive = hardwareMap.get(DcMotor.class, "left_back");
             rightBackDrive = hardwareMap.get(DcMotor.class, "right_back");
-            shooter = hardwareMap.get(DcMotor.class, "shooter");
+            shooter = hardwareMap.get(DcMotorEx.class, "shooter");
             intake = hardwareMap.get(DcMotor.class, "intake");
 
 
@@ -45,7 +46,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
             leftBackDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             rightFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             rightBackDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-            shooter.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            shooter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             intake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
 
@@ -53,7 +54,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
             rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
             leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
             rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
-            shooter.setDirection(DcMotor.Direction.FORWARD);
+            shooter.setDirection(DcMotor.Direction.REVERSE);
             intake.setDirection(DcMotor.Direction.REVERSE);
 
 
@@ -96,9 +97,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
                 rightBackPower /= 2;
             }
             if (gamepad1.right_trigger > 0.5) {
-                shooter.setPower(1);
+                shooter.setVelocity(2800);
             } else {
-                shooter.setPower(0);
+                shooter.setVelocity(0);
             }
 
             if (gamepad1.left_trigger > 0.5) {
