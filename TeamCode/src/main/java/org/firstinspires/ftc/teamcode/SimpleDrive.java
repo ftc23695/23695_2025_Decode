@@ -103,6 +103,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
             if (gamepad1.left_trigger > 0.5) {
                 intake.setPower(1);
+            } else if (gamepad1.left_bumper){
+                intake.setPower(-1);
             } else {
                 intake.setPower(0);
             }
