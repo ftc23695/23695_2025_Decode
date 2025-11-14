@@ -25,6 +25,9 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
         private DcMotorEx shooter = null;
         private DcMotor intake = null;
 
+        boolean shooterPowerControl = true;
+        double shooterVelocity = 0;
+
 
         @Override
         public void init() {
@@ -77,6 +80,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
             double rightFrontPower;
             double leftBackPower;
             double rightBackPower;
+
 //      y
 //   x     b    << controller button layout
 //      a
@@ -97,10 +101,12 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
                 rightBackPower /= 2;
             }
             if (gamepad1.right_trigger > 0.5) {
-                shooter.setVelocity(2800);
-            } else {
-                shooter.setVelocity(0);
+                shooterVelocity = 2800;
             }
+            if (gamepad1.dpad_down) {
+                shooterVelocity = 0;
+            }
+
 
             if (gamepad1.left_trigger > 0.5) {
                 intake.setPower(1);
@@ -109,12 +115,23 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
             } else {
                 intake.setPower(0);
             }
+            if (shooterPowerControl && gamepad1.y && shooterVelocity != 0) {
+                shooterVelocity += 280;
+                shooterPowerControl = false;
+            } else if (shooterPowerControl && gamepad1.a && shooterVelocity != 2800) {
+                shooterVelocity -= 280;
+                shooterPowerControl = false;
+            } else if (!gamepad1.a && !gamepad1.y) {
+                shooterPowerControl = true;
+            }
+
 
 
             leftFrontDrive.setPower(leftFrontPower);
             rightFrontDrive.setPower(rightFrontPower);
             leftBackDrive.setPower(leftBackPower);
             rightBackDrive.setPower(rightBackPower);
+            shooter.setVelocity(shooterVelocity);
 
             //Claw Code: Opens with GP2 X and opens less when past vertical position
             // BIGGER CLOSES MORE*********************
