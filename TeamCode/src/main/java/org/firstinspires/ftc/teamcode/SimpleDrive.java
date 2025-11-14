@@ -20,6 +20,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
         private DcMotor leftBackDrive = null;
         private DcMotor rightFrontDrive = null;
         private DcMotor rightBackDrive = null;
+        private DcMotor shooter = null;
+
 
         @Override
         public void init() {
@@ -31,22 +33,30 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
             rightFrontDrive = hardwareMap.get(DcMotor.class, "right_front");
             leftBackDrive = hardwareMap.get(DcMotor.class, "left_back");
             rightBackDrive = hardwareMap.get(DcMotor.class, "right_back");
+            shooter = hardwareMap.get(DcMotor.class, "shooter");
+
 
 
             leftFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             leftBackDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             rightFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             rightBackDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            shooter.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
 
             leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
             rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
             leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
             rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
+            shooter.setDirection(DcMotor.Direction.FORWARD);
+
 
             leftFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             rightFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             leftBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             rightBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            shooter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
 
             telemetry.addData("status", "Initialized");
         }
@@ -59,11 +69,14 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
             double rightFrontPower;
             double leftBackPower;
             double rightBackPower;
-
+//      y
+//   x     b    << controller button layout
+//      a
 
             double drive = -gamepad1.left_stick_y;
             double strafe = gamepad1.left_stick_x;
             double turn = gamepad1.right_stick_x;
+
             leftFrontPower = Range.clip(drive + turn + strafe, -1, 1);
             rightFrontPower = Range.clip(drive - turn - strafe, -1, 1);
             leftBackPower = Range.clip(drive + turn - strafe, -1, 1);
@@ -75,6 +88,11 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
                 rightFrontPower /= 2;
                 rightBackPower /= 2;
             }
+            if (gamepad1.right_trigger > 0.5) {
+                shooter.setPower(1);
+            } else
+                shooter.setPower(0);
+
 
             leftFrontDrive.setPower(leftFrontPower);
             rightFrontDrive.setPower(rightFrontPower);
@@ -92,6 +110,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
             rightFrontDrive.setPower(0);
             leftBackDrive.setPower(0);
             rightBackDrive.setPower(0);
+            shooter.setPower(0);
 
 
         }
