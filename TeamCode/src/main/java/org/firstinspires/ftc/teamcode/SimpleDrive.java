@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -21,6 +22,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
         private DcMotor rightFrontDrive = null;
         private DcMotor rightBackDrive = null;
         private DcMotor shooter = null;
+        private DcMotor intake = null;
 
 
         @Override
@@ -34,14 +36,17 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
             leftBackDrive = hardwareMap.get(DcMotor.class, "left_back");
             rightBackDrive = hardwareMap.get(DcMotor.class, "right_back");
             shooter = hardwareMap.get(DcMotor.class, "shooter");
+            intake = hardwareMap.get(DcMotor.class, "intake");
 
 
+            //other motor initializing
 
             leftFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             leftBackDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             rightFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             rightBackDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             shooter.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            intake.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
 
             leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
@@ -49,6 +54,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
             leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
             rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
             shooter.setDirection(DcMotor.Direction.FORWARD);
+            intake.setDirection(DcMotor.Direction.FORWARD);
 
 
             leftFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -56,6 +62,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
             leftBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             rightBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             shooter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            intake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
             telemetry.addData("status", "Initialized");
@@ -90,8 +97,15 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
             }
             if (gamepad1.right_trigger > 0.5) {
                 shooter.setPower(1);
-            } else
+            } else {
                 shooter.setPower(0);
+            }
+
+            if (gamepad1.left_trigger > 0.5) {
+                intake.setPower(1);
+            } else {
+                intake.setPower(0);
+            }
 
 
             leftFrontDrive.setPower(leftFrontPower);
@@ -111,6 +125,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
             leftBackDrive.setPower(0);
             rightBackDrive.setPower(0);
             shooter.setPower(0);
+            intake.setPower(0);
 
 
         }
