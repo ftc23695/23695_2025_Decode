@@ -54,7 +54,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
             leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
             rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
             shooter.setDirection(DcMotor.Direction.FORWARD);
-            intake.setDirection(DcMotor.Direction.FORWARD);
+            intake.setDirection(DcMotor.Direction.REVERSE);
 
 
             leftFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
