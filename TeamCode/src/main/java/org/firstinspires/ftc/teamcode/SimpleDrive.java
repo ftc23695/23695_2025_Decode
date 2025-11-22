@@ -54,7 +54,7 @@ import com.qualcomm.robotcore.util.Range;
             rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
             shooter.setDirection(DcMotor.Direction.REVERSE);
             intakeForward.setDirection(DcMotor.Direction.REVERSE);
-            intakeBack.setDirection(DcMotor.Direction.FORWARD);
+            intakeBack.setDirection(DcMotor.Direction.REVERSE);
 
 
             leftFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -97,25 +97,27 @@ import com.qualcomm.robotcore.util.Range;
                 rightFrontPower /= 2;
                 rightBackPower /= 2;
             }
-            if (gamepad1.right_trigger > 0.5) {
+            if (gamepad2.right_trigger > 0.5) {
                 shooterVelocity = 2800;
+            } else {
+                shooterVelocity = 0;
             }
 //            if (gamepad1.dpad_down) {
 //                shooterVelocity = 0;
 //            }
 
 
-            if (gamepad1.left_trigger > 0.5) {
+            if (gamepad2.left_trigger > 0.5) {
                 intakeForward.setPower(1);
             }
-            else if (gamepad1.left_bumper) {
+            else if (gamepad2.left_bumper) {
                 intakeBack.setPower(1);
             }
-            else if (gamepad1.left_bumper && gamepad1.left_trigger > 0.5) {
+            else if (gamepad2.left_bumper && gamepad2.left_trigger > 0.5) {
                 intakeForward.setPower(1);
                 intakeBack.setPower(1);
             }
-            else if (gamepad1.dpad_down) {
+            else if (gamepad2.dpad_down) {
                 intakeForward.setPower(-1);
                 intakeBack.setPower(-1);
             } else {
@@ -131,7 +133,7 @@ import com.qualcomm.robotcore.util.Range;
 //            } else if (!gamepad1.a && !gamepad1.y) {
 //                shooterPowerControl = true;
 //            }
-            if (gamepad1.a && gamepad1.b && gamepad1.x && gamepad1.y) {
+            if ((gamepad1.a && gamepad1.b && gamepad1.x && gamepad1.y) || (gamepad2.a && gamepad2.b && gamepad2.x && gamepad2.y)) {
                 leftFrontDrive.setPower(0);
                 rightFrontDrive.setPower(0);
                 leftBackDrive.setPower(0);
