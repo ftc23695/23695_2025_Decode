@@ -160,10 +160,10 @@ import com.qualcomm.robotcore.util.Range;
             // BIGGER CLOSES MORE*********************
 
             // telemetry
-            telemetry.addData("left front motor", "Power = %.2f", leftFrontPower);
-            telemetry.addData("right front motor", "Power = %.2f", rightFrontPower);
-            telemetry.addData("left rear motor", "Power = %.2f", leftBackPower);
-            telemetry.addData("right rear motor", "Power = %.2f", rightBackPower);
+            telemetry.addData("left front motor expected", "power = %.2f", leftFrontPower);
+            telemetry.addData("right front motor expected", "Power = %.2f", rightFrontPower);
+            telemetry.addData("left rear motor expected", "Power = %.2f", leftBackPower);
+            telemetry.addData("right rear motor expected", "Power = %.2f", rightBackPower);
         }
 
 
