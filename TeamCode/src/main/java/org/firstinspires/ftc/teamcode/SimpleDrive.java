@@ -102,7 +102,7 @@ import com.qualcomm.robotcore.util.Range;
             if (gamepad2.right_trigger > 0.5) {
                 shooterVelocity = 2500;
             } else if (gamepad2.right_bumper) {
-                shooterVelocity = 1800;
+                shooterVelocity = 1500;
             }
             else {
                 shooterVelocity = 0;
