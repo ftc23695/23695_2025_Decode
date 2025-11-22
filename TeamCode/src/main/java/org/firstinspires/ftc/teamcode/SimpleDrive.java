@@ -100,8 +100,11 @@ import com.qualcomm.robotcore.util.Range;
                 rightBackPower /= 2;
             } // shooter controls
             if (gamepad2.right_trigger > 0.5) {
-                shooterVelocity = 2000;
-            } else {
+                shooterVelocity = 2500;
+            } else if (gamepad2.right_bumper) {
+                shooterVelocity = 1800;
+            }
+            else {
                 shooterVelocity = 0;
             }
 //            if (gamepad1.dpad_down) {
