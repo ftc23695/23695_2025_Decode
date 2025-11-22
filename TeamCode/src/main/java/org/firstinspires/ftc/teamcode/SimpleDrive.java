@@ -73,6 +73,7 @@ import com.qualcomm.robotcore.util.Range;
         //Set variables//
         @Override
         public void loop() {
+            // drive variables
             double leftFrontPower;
             double rightFrontPower;
             double leftBackPower;
@@ -81,24 +82,25 @@ import com.qualcomm.robotcore.util.Range;
 //      y
 //   x     b    << controller button layout
 //      a
-
+            // joystick controls
             double drive = -gamepad1.left_stick_y;
             double strafe = gamepad1.left_stick_x;
             double turn = gamepad1.right_stick_x;
-
+            // making sure power doesnt exceed 100% and adding and subtracting variables to
+            // get individual motor power levels
             leftFrontPower = Range.clip(drive + turn + strafe, -1, 1);
             rightFrontPower = Range.clip(drive - turn - strafe, -1, 1);
             leftBackPower = Range.clip(drive + turn - strafe, -1, 1);
             rightBackPower = Range.clip(drive - turn + strafe, -1, 1);
-
+            // dividing power if right bumper is pressed
             if(gamepad1.right_bumper){
                 leftFrontPower /= 2;
                 leftBackPower /= 2;
                 rightFrontPower /= 2;
                 rightBackPower /= 2;
-            }
+            } // shooter controls
             if (gamepad2.right_trigger > 0.5) {
-                shooterVelocity = 2800;
+                shooterVelocity = 2000;
             } else {
                 shooterVelocity = 0;
             }
@@ -106,7 +108,7 @@ import com.qualcomm.robotcore.util.Range;
 //                shooterVelocity = 0;
 //            }
 
-
+            // intake and transfer controls
             if (gamepad2.left_trigger > 0.5) {
                 intakeForward.setPower(1);
             }
@@ -123,7 +125,7 @@ import com.qualcomm.robotcore.util.Range;
             } else {
                 intakeForward.setPower(0);
                 intakeBack.setPower(0);
-            }
+            } // old shooter controls, keep commented out for now
 //            if (shooterPowerControl && gamepad1.y && shooterVelocity != 0) {
 //                shooterVelocity += 280;
 //                shooterPowerControl = false;
@@ -133,6 +135,7 @@ import com.qualcomm.robotcore.util.Range;
 //            } else if (!gamepad1.a && !gamepad1.y) {
 //                shooterPowerControl = true;
 //            }
+            // self destruct button
             if ((gamepad1.a && gamepad1.b && gamepad1.x && gamepad1.y) || (gamepad2.a && gamepad2.b && gamepad2.x && gamepad2.y)) {
                 leftFrontDrive.setPower(0);
                 rightFrontDrive.setPower(0);
@@ -146,7 +149,7 @@ import com.qualcomm.robotcore.util.Range;
             }
 
 
-
+            //setting final power levels
             leftFrontDrive.setPower(leftFrontPower);
             rightFrontDrive.setPower(rightFrontPower);
             leftBackDrive.setPower(leftBackPower);
@@ -156,7 +159,13 @@ import com.qualcomm.robotcore.util.Range;
             //Claw Code: Opens with GP2 X and opens less when past vertical position
             // BIGGER CLOSES MORE*********************
 
+            // telemetry
+            telemetry.addData("left front motor", "Power = %.2f", leftFrontPower);
+            telemetry.addData("right front motor", "Power = %.2f", rightFrontPower);
+            telemetry.addData("left rear motor", "Power = %.2f", leftBackPower);
+            telemetry.addData("right rear motor", "Power = %.2f", rightBackPower);
         }
+
 
         @Override
         public void stop() {
