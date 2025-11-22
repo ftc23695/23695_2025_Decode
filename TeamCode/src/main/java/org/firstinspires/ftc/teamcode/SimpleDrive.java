@@ -100,30 +100,37 @@ import com.qualcomm.robotcore.util.Range;
             if (gamepad1.right_trigger > 0.5) {
                 shooterVelocity = 2800;
             }
-            if (gamepad1.dpad_down) {
-                shooterVelocity = 0;
-            }
+//            if (gamepad1.dpad_down) {
+//                shooterVelocity = 0;
+//            }
 
 
             if (gamepad1.left_trigger > 0.5) {
                 intakeForward.setPower(1);
+            }
+            else if (gamepad1.left_bumper) {
                 intakeBack.setPower(1);
-            } else if (gamepad1.left_bumper){
+            }
+            else if (gamepad1.left_bumper && gamepad1.left_trigger > 0.5) {
+                intakeForward.setPower(1);
+                intakeBack.setPower(1);
+            }
+            else if (gamepad1.dpad_down) {
                 intakeForward.setPower(-1);
                 intakeBack.setPower(-1);
             } else {
                 intakeForward.setPower(0);
                 intakeBack.setPower(0);
             }
-            if (shooterPowerControl && gamepad1.y && shooterVelocity != 0) {
-                shooterVelocity += 280;
-                shooterPowerControl = false;
-            } else if (shooterPowerControl && gamepad1.a && shooterVelocity != 2800) {
-                shooterVelocity -= 280;
-                shooterPowerControl = false;
-            } else if (!gamepad1.a && !gamepad1.y) {
-                shooterPowerControl = true;
-            }
+//            if (shooterPowerControl && gamepad1.y && shooterVelocity != 0) {
+//                shooterVelocity += 280;
+//                shooterPowerControl = false;
+//            } else if (shooterPowerControl && gamepad1.a && shooterVelocity != 2800) {
+//                shooterVelocity -= 280;
+//                shooterPowerControl = false;
+//            } else if (!gamepad1.a && !gamepad1.y) {
+//                shooterPowerControl = true;
+//            }
             if (gamepad1.a && gamepad1.b && gamepad1.x && gamepad1.y) {
                 leftFrontDrive.setPower(0);
                 rightFrontDrive.setPower(0);
