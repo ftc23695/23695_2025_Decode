@@ -34,7 +34,7 @@ import com.qualcomm.robotcore.util.Range;
             rightBackDrive = hardwareMap.get(DcMotor.class, "right_back");
             shooter = hardwareMap.get(DcMotorEx.class, "shooter");
             intakeForward = hardwareMap.get(DcMotor.class, "intakeForward");
-            intakeBack = hardwareMap.get(DcMotor.class, "intakeForward");
+            intakeBack = hardwareMap.get(DcMotor.class, "intakeBack");
 
 
             //other motor initializing

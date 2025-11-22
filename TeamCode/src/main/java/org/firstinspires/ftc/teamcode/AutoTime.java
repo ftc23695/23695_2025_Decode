@@ -161,12 +161,12 @@ public class AutoTime {
             intakeBack.setPower(0);
 
         }
-        drive(1000, 0.5, FORWARD);
-        opMode.sleep(500);
-        drive(500, 0.7, TURNLEFT);
-        opMode.sleep(500);
-        drive(3000, 0.5, SHOOT);
-        drive(3000, 1, INTAKE);
+//        drive(1000, 0.5, FORWARD);
+//        opMode.sleep(500);
+        drive(500, 0.5, TURNLEFT);
+//        opMode.sleep(500);
+//        drive(3000, 0.5, SHOOT);
+//        drive(3000, 1, INTAKE);
 
     }
 
