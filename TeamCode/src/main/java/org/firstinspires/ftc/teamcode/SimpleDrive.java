@@ -98,7 +98,14 @@ import com.qualcomm.robotcore.util.Range;
                 leftBackPower /= 2;
                 rightFrontPower /= 2;
                 rightBackPower /= 2;
-            } // shooter controls
+            } else if(gamepad1.left_trigger > 0.5){
+                leftFrontPower /= 4;
+                leftBackPower /= 4;
+                rightFrontPower /= 4;
+                rightBackPower /= 4;
+            }
+
+            // shooter controls
             if (gamepad2.right_trigger > 0.5) {
                 shooterVelocity = 1800;
             } else if (gamepad2.right_bumper) {

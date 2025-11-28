@@ -146,6 +146,8 @@ public class AutoTimebutWorks extends LinearOpMode {
 
         // order: speed, distance (either field tiles or degrees), sleep time (pause after movement, in ms), caption, leg
 
+        // negative power to go backward not distance
+
 
 
 //        // Step 2:  Spin right for 1.3 seconds
