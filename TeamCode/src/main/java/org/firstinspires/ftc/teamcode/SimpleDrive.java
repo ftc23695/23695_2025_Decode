@@ -93,16 +93,16 @@ import com.qualcomm.robotcore.util.Range;
             leftBackPower = Range.clip(drive + turn - strafe, -1, 1);
             rightBackPower = Range.clip(drive - turn + strafe, -1, 1);
             // dividing power if right bumper is pressed
-            if(gamepad1.right_bumper){
+            if(gamepad1.right_trigger > 0.5){
                 leftFrontPower /= 2;
                 leftBackPower /= 2;
                 rightFrontPower /= 2;
                 rightBackPower /= 2;
             } // shooter controls
             if (gamepad2.right_trigger > 0.5) {
-                shooterVelocity = 2000;
+                shooterVelocity = 1800;
             } else if (gamepad2.right_bumper) {
-                shooterVelocity = 1500;
+                shooterVelocity = 1400;
             }
             else {
                 shooterVelocity = 0;
