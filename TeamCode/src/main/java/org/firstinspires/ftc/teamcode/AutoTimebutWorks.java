@@ -27,7 +27,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.robotcontroller.external.samples;
+package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -71,6 +71,39 @@ public class AutoTimebutWorks extends LinearOpMode {
     static final double     FORWARD_SPEED = 0.3;
     static final double     TURN_SPEED    = 0.3;
 
+    public void drive(double speed,double fieldtiles,int sleeptime,String caption,String leg){
+        leftFrontDrive.setPower(speed * FORWARD_SPEED);
+        rightFrontDrive.setPower(speed * FORWARD_SPEED);
+        leftBackDrive.setPower(speed * FORWARD_SPEED);
+        rightBackDrive.setPower(speed * FORWARD_SPEED);
+        runtime.reset();
+        while (opModeIsActive() && (runtime.seconds() < fieldtiles * 1.12)) {
+            telemetry.addData(caption, leg + ": %4.1f S Elapsed", runtime.seconds());
+            telemetry.update();
+        }
+        leftFrontDrive.setPower(0);
+        rightFrontDrive.setPower(0);
+        leftBackDrive.setPower(0);
+        rightBackDrive.setPower(0);
+        sleep(sleeptime);
+    }
+    public void turn(double speed,double degrees,int sleeptime,String caption,String leg){
+        leftFrontDrive.setPower(speed * TURN_SPEED);
+        rightFrontDrive.setPower(-speed * TURN_SPEED);
+        leftBackDrive.setPower(speed * TURN_SPEED);
+        rightBackDrive.setPower(-speed * TURN_SPEED);
+        runtime.reset();
+        while (opModeIsActive() && (runtime.seconds() < (degrees / 90) * 0.96)) {
+            telemetry.addData(caption, leg + ": %4.1f S Elapsed", runtime.seconds());
+            telemetry.update();
+        }
+        leftFrontDrive.setPower(0);
+        rightFrontDrive.setPower(0);
+        leftBackDrive.setPower(0);
+        rightBackDrive.setPower(0);
+        sleep(sleeptime);
+    }
+
     @Override
     public void runOpMode() {
 
@@ -107,151 +140,11 @@ public class AutoTimebutWorks extends LinearOpMode {
 
         // Step through each leg of the path, ensuring that the OpMode has not been stopped along the way.
 
-        // Step 1:  Drive forward for 3 seconds
-        leftFrontDrive.setPower(FORWARD_SPEED);
-        rightFrontDrive.setPower(FORWARD_SPEED);
-        leftBackDrive.setPower(FORWARD_SPEED);
-        rightBackDrive.setPower(FORWARD_SPEED);
-        runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < .2)) {
-            telemetry.addData(".2 Forward", "Leg 1: %4.1f S Elapsed", runtime.seconds());
-            telemetry.update();
-        }
-        leftFrontDrive.setPower(0);
-        rightFrontDrive.setPower(0);
-        leftBackDrive.setPower(0);
-        rightBackDrive.setPower(0);
-        sleep(1000);
+        //turn goes left, drive goes forward
 
-        leftFrontDrive.setPower(FORWARD_SPEED);
-        rightFrontDrive.setPower(FORWARD_SPEED);
-        leftBackDrive.setPower(FORWARD_SPEED);
-        rightBackDrive.setPower(FORWARD_SPEED);
-        runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < .4)) {
-            telemetry.addData(".4 Forward", "Leg 2: %4.1f S Elapsed", runtime.seconds());
-            telemetry.update();
-        }
-        leftFrontDrive.setPower(0);
-        rightFrontDrive.setPower(0);
-        leftBackDrive.setPower(0);
-        rightBackDrive.setPower(0);
-        sleep(1000);
+        // example of drive, text will automatically appear: drive (1, 2, 1000, "Forward", "Leg 1");
 
-        leftFrontDrive.setPower(FORWARD_SPEED);
-        rightFrontDrive.setPower(FORWARD_SPEED);
-        leftBackDrive.setPower(FORWARD_SPEED);
-        rightBackDrive.setPower(FORWARD_SPEED);
-        runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < .6)) {
-            telemetry.addData(".6 Forward", "Leg 3: %4.1f S Elapsed", runtime.seconds());
-            telemetry.update();
-        }
-        leftFrontDrive.setPower(0);
-        rightFrontDrive.setPower(0);
-        leftBackDrive.setPower(0);
-        rightBackDrive.setPower(0);
-        sleep(1000);
-
-        leftFrontDrive.setPower(-FORWARD_SPEED);
-        rightFrontDrive.setPower(-FORWARD_SPEED);
-        leftBackDrive.setPower(-FORWARD_SPEED);
-        rightBackDrive.setPower(-FORWARD_SPEED);
-        runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < 1.2)) {
-            telemetry.addData("Reversing...", "Leg 4: %4.1f S Elapsed", runtime.seconds());
-            telemetry.update();
-        }
-        leftFrontDrive.setPower(0);
-        rightFrontDrive.setPower(0);
-        leftBackDrive.setPower(0);
-        rightBackDrive.setPower(0);
-        sleep(1000);
-
-        leftFrontDrive.setPower(FORWARD_SPEED);
-        rightFrontDrive.setPower(FORWARD_SPEED);
-        leftBackDrive.setPower(FORWARD_SPEED);
-        rightBackDrive.setPower(FORWARD_SPEED);
-        runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < .8)) {
-            telemetry.addData(".8 Forward", "Leg 5: %4.1f S Elapsed", runtime.seconds());
-            telemetry.update();
-        }
-        leftFrontDrive.setPower(0);
-        rightFrontDrive.setPower(0);
-        leftBackDrive.setPower(0);
-        rightBackDrive.setPower(0);
-        sleep(1000);
-
-        leftFrontDrive.setPower(-FORWARD_SPEED);
-        rightFrontDrive.setPower(-FORWARD_SPEED);
-        leftBackDrive.setPower(-FORWARD_SPEED);
-        rightBackDrive.setPower(-FORWARD_SPEED);
-        runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < .8)) {
-            telemetry.addData("Reversing...", "Leg 6: %4.1f S Elapsed", runtime.seconds());
-            telemetry.update();
-        }
-        leftFrontDrive.setPower(0);
-        rightFrontDrive.setPower(0);
-        leftBackDrive.setPower(0);
-        rightBackDrive.setPower(0);
-        sleep(1000);
-
-        leftFrontDrive.setPower(FORWARD_SPEED);
-        rightFrontDrive.setPower(-FORWARD_SPEED);
-        leftBackDrive.setPower(FORWARD_SPEED);
-        rightBackDrive.setPower(-FORWARD_SPEED);
-        runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < .2)) {
-            telemetry.addData(".2 Seconds Turn", "Leg 7: %4.1f S Elapsed", runtime.seconds());
-            telemetry.update();
-        }
-        leftFrontDrive.setPower(0);
-        rightFrontDrive.setPower(0);
-        leftBackDrive.setPower(0);
-        rightBackDrive.setPower(0);
-        sleep(1000);
-
-        leftFrontDrive.setPower(FORWARD_SPEED);
-        rightFrontDrive.setPower(-FORWARD_SPEED);
-        leftBackDrive.setPower(FORWARD_SPEED);
-        rightBackDrive.setPower(-FORWARD_SPEED);
-        runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < .4)) {
-            telemetry.addData(".4 Seconds Turn", "Leg 8: %4.1f S Elapsed", runtime.seconds());
-            telemetry.update();
-        }
-        leftFrontDrive.setPower(0);
-        rightFrontDrive.setPower(0);
-        leftBackDrive.setPower(0);
-        rightBackDrive.setPower(0);
-        sleep(1000);
-
-        leftFrontDrive.setPower(FORWARD_SPEED);
-        rightFrontDrive.setPower(-FORWARD_SPEED);
-        leftBackDrive.setPower(FORWARD_SPEED);
-        rightBackDrive.setPower(-FORWARD_SPEED);
-        runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < .6)) {
-            telemetry.addData(".6 Seconds Turn", "Leg 9: %4.1f S Elapsed", runtime.seconds());
-            telemetry.update();
-        }
-        leftFrontDrive.setPower(0);
-        rightFrontDrive.setPower(0);
-        leftBackDrive.setPower(0);
-        rightBackDrive.setPower(0);
-        sleep(1000);
-        
-        leftFrontDrive.setPower(FORWARD_SPEED);
-        rightFrontDrive.setPower(-FORWARD_SPEED);
-        leftBackDrive.setPower(FORWARD_SPEED);
-        rightBackDrive.setPower(-FORWARD_SPEED);
-        runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < .8)) {
-            telemetry.addData(".8 Seconds Turn", "Leg 10: %4.1f S Elapsed", runtime.seconds());
-            telemetry.update();
-        }
+        // order: speed, distance (either field tiles or degrees), sleep time (pause after movement, in ms), caption, leg
 
 
 
