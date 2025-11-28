@@ -117,7 +117,12 @@ public class AutoTimebutWorks extends LinearOpMode {
             telemetry.addData(".2 Forward", "Leg 1: %4.1f S Elapsed", runtime.seconds());
             telemetry.update();
         }
+        leftFrontDrive.setPower(0);
+        rightFrontDrive.setPower(0);
+        leftBackDrive.setPower(0);
+        rightBackDrive.setPower(0);
         sleep(1000);
+
         leftFrontDrive.setPower(FORWARD_SPEED);
         rightFrontDrive.setPower(FORWARD_SPEED);
         leftBackDrive.setPower(FORWARD_SPEED);
@@ -127,7 +132,12 @@ public class AutoTimebutWorks extends LinearOpMode {
             telemetry.addData(".4 Forward", "Leg 2: %4.1f S Elapsed", runtime.seconds());
             telemetry.update();
         }
+        leftFrontDrive.setPower(0);
+        rightFrontDrive.setPower(0);
+        leftBackDrive.setPower(0);
+        rightBackDrive.setPower(0);
         sleep(1000);
+
         leftFrontDrive.setPower(FORWARD_SPEED);
         rightFrontDrive.setPower(FORWARD_SPEED);
         leftBackDrive.setPower(FORWARD_SPEED);
@@ -137,7 +147,12 @@ public class AutoTimebutWorks extends LinearOpMode {
             telemetry.addData(".6 Forward", "Leg 3: %4.1f S Elapsed", runtime.seconds());
             telemetry.update();
         }
+        leftFrontDrive.setPower(0);
+        rightFrontDrive.setPower(0);
+        leftBackDrive.setPower(0);
+        rightBackDrive.setPower(0);
         sleep(1000);
+
         leftFrontDrive.setPower(-FORWARD_SPEED);
         rightFrontDrive.setPower(-FORWARD_SPEED);
         leftBackDrive.setPower(-FORWARD_SPEED);
@@ -147,7 +162,12 @@ public class AutoTimebutWorks extends LinearOpMode {
             telemetry.addData("Reversing...", "Leg 4: %4.1f S Elapsed", runtime.seconds());
             telemetry.update();
         }
+        leftFrontDrive.setPower(0);
+        rightFrontDrive.setPower(0);
+        leftBackDrive.setPower(0);
+        rightBackDrive.setPower(0);
         sleep(1000);
+
         leftFrontDrive.setPower(FORWARD_SPEED);
         rightFrontDrive.setPower(FORWARD_SPEED);
         leftBackDrive.setPower(FORWARD_SPEED);
@@ -157,7 +177,12 @@ public class AutoTimebutWorks extends LinearOpMode {
             telemetry.addData(".8 Forward", "Leg 5: %4.1f S Elapsed", runtime.seconds());
             telemetry.update();
         }
+        leftFrontDrive.setPower(0);
+        rightFrontDrive.setPower(0);
+        leftBackDrive.setPower(0);
+        rightBackDrive.setPower(0);
         sleep(1000);
+
         leftFrontDrive.setPower(-FORWARD_SPEED);
         rightFrontDrive.setPower(-FORWARD_SPEED);
         leftBackDrive.setPower(-FORWARD_SPEED);
@@ -167,7 +192,12 @@ public class AutoTimebutWorks extends LinearOpMode {
             telemetry.addData("Reversing...", "Leg 6: %4.1f S Elapsed", runtime.seconds());
             telemetry.update();
         }
+        leftFrontDrive.setPower(0);
+        rightFrontDrive.setPower(0);
+        leftBackDrive.setPower(0);
+        rightBackDrive.setPower(0);
         sleep(1000);
+
         leftFrontDrive.setPower(FORWARD_SPEED);
         rightFrontDrive.setPower(-FORWARD_SPEED);
         leftBackDrive.setPower(FORWARD_SPEED);
@@ -177,7 +207,12 @@ public class AutoTimebutWorks extends LinearOpMode {
             telemetry.addData(".2 Seconds Turn", "Leg 7: %4.1f S Elapsed", runtime.seconds());
             telemetry.update();
         }
+        leftFrontDrive.setPower(0);
+        rightFrontDrive.setPower(0);
+        leftBackDrive.setPower(0);
+        rightBackDrive.setPower(0);
         sleep(1000);
+
         leftFrontDrive.setPower(FORWARD_SPEED);
         rightFrontDrive.setPower(-FORWARD_SPEED);
         leftBackDrive.setPower(FORWARD_SPEED);
@@ -187,7 +222,12 @@ public class AutoTimebutWorks extends LinearOpMode {
             telemetry.addData(".4 Seconds Turn", "Leg 8: %4.1f S Elapsed", runtime.seconds());
             telemetry.update();
         }
+        leftFrontDrive.setPower(0);
+        rightFrontDrive.setPower(0);
+        leftBackDrive.setPower(0);
+        rightBackDrive.setPower(0);
         sleep(1000);
+
         leftFrontDrive.setPower(FORWARD_SPEED);
         rightFrontDrive.setPower(-FORWARD_SPEED);
         leftBackDrive.setPower(FORWARD_SPEED);
@@ -197,7 +237,12 @@ public class AutoTimebutWorks extends LinearOpMode {
             telemetry.addData(".6 Seconds Turn", "Leg 9: %4.1f S Elapsed", runtime.seconds());
             telemetry.update();
         }
+        leftFrontDrive.setPower(0);
+        rightFrontDrive.setPower(0);
+        leftBackDrive.setPower(0);
+        rightBackDrive.setPower(0);
         sleep(1000);
+        
         leftFrontDrive.setPower(FORWARD_SPEED);
         rightFrontDrive.setPower(-FORWARD_SPEED);
         leftBackDrive.setPower(FORWARD_SPEED);
