@@ -34,6 +34,7 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 /*
  * This OpMode illustrates the concept of driving a path based on time.
@@ -67,8 +68,8 @@ public class RobotAutoDriveByTime_Linear extends LinearOpMode {
     private ElapsedTime     runtime = new ElapsedTime();
 
 
-    static final double     FORWARD_SPEED = 0.4;
-    static final double     TURN_SPEED    = 0.5;
+    static final double     FORWARD_SPEED = 0.3;
+    static final double     TURN_SPEED    = 0.3;
 
     @Override
     public void runOpMode() {
@@ -112,10 +113,102 @@ public class RobotAutoDriveByTime_Linear extends LinearOpMode {
         leftBackDrive.setPower(FORWARD_SPEED);
         rightBackDrive.setPower(FORWARD_SPEED);
         runtime.reset();
-        while (opModeIsActive() && (runtime.seconds() < .5)) {
-            telemetry.addData("Path", "Leg 1: %4.1f S Elapsed", runtime.seconds());
+        while (opModeIsActive() && (runtime.seconds() < .2)) {
+            telemetry.addData(".2 Forward", "Leg 1: %4.1f S Elapsed", runtime.seconds());
             telemetry.update();
         }
+        sleep(1000);
+        leftFrontDrive.setPower(FORWARD_SPEED);
+        rightFrontDrive.setPower(FORWARD_SPEED);
+        leftBackDrive.setPower(FORWARD_SPEED);
+        rightBackDrive.setPower(FORWARD_SPEED);
+        runtime.reset();
+        while (opModeIsActive() && (runtime.seconds() < .4)) {
+            telemetry.addData(".4 Forward", "Leg 2: %4.1f S Elapsed", runtime.seconds());
+            telemetry.update();
+        }
+        sleep(1000);
+        leftFrontDrive.setPower(FORWARD_SPEED);
+        rightFrontDrive.setPower(FORWARD_SPEED);
+        leftBackDrive.setPower(FORWARD_SPEED);
+        rightBackDrive.setPower(FORWARD_SPEED);
+        runtime.reset();
+        while (opModeIsActive() && (runtime.seconds() < .6)) {
+            telemetry.addData(".6 Forward", "Leg 3: %4.1f S Elapsed", runtime.seconds());
+            telemetry.update();
+        }
+        sleep(1000);
+        leftFrontDrive.setPower(-FORWARD_SPEED);
+        rightFrontDrive.setPower(-FORWARD_SPEED);
+        leftBackDrive.setPower(-FORWARD_SPEED);
+        rightBackDrive.setPower(-FORWARD_SPEED);
+        runtime.reset();
+        while (opModeIsActive() && (runtime.seconds() < 1.2)) {
+            telemetry.addData("Reversing...", "Leg 4: %4.1f S Elapsed", runtime.seconds());
+            telemetry.update();
+        }
+        sleep(1000);
+        leftFrontDrive.setPower(FORWARD_SPEED);
+        rightFrontDrive.setPower(FORWARD_SPEED);
+        leftBackDrive.setPower(FORWARD_SPEED);
+        rightBackDrive.setPower(FORWARD_SPEED);
+        runtime.reset();
+        while (opModeIsActive() && (runtime.seconds() < .8)) {
+            telemetry.addData(".8 Forward", "Leg 5: %4.1f S Elapsed", runtime.seconds());
+            telemetry.update();
+        }
+        sleep(1000);
+        leftFrontDrive.setPower(-FORWARD_SPEED);
+        rightFrontDrive.setPower(-FORWARD_SPEED);
+        leftBackDrive.setPower(-FORWARD_SPEED);
+        rightBackDrive.setPower(-FORWARD_SPEED);
+        runtime.reset();
+        while (opModeIsActive() && (runtime.seconds() < .8)) {
+            telemetry.addData("Reversing...", "Leg 6: %4.1f S Elapsed", runtime.seconds());
+            telemetry.update();
+        }
+        sleep(1000);
+        leftFrontDrive.setPower(FORWARD_SPEED);
+        rightFrontDrive.setPower(-FORWARD_SPEED);
+        leftBackDrive.setPower(FORWARD_SPEED);
+        rightBackDrive.setPower(-FORWARD_SPEED);
+        runtime.reset();
+        while (opModeIsActive() && (runtime.seconds() < .2)) {
+            telemetry.addData(".2 Seconds Turn", "Leg 7: %4.1f S Elapsed", runtime.seconds());
+            telemetry.update();
+        }
+        sleep(1000);
+        leftFrontDrive.setPower(FORWARD_SPEED);
+        rightFrontDrive.setPower(-FORWARD_SPEED);
+        leftBackDrive.setPower(FORWARD_SPEED);
+        rightBackDrive.setPower(-FORWARD_SPEED);
+        runtime.reset();
+        while (opModeIsActive() && (runtime.seconds() < .4)) {
+            telemetry.addData(".4 Seconds Turn", "Leg 8: %4.1f S Elapsed", runtime.seconds());
+            telemetry.update();
+        }
+        sleep(1000);
+        leftFrontDrive.setPower(FORWARD_SPEED);
+        rightFrontDrive.setPower(-FORWARD_SPEED);
+        leftBackDrive.setPower(FORWARD_SPEED);
+        rightBackDrive.setPower(-FORWARD_SPEED);
+        runtime.reset();
+        while (opModeIsActive() && (runtime.seconds() < .6)) {
+            telemetry.addData(".6 Seconds Turn", "Leg 9: %4.1f S Elapsed", runtime.seconds());
+            telemetry.update();
+        }
+        sleep(1000);
+        leftFrontDrive.setPower(FORWARD_SPEED);
+        rightFrontDrive.setPower(-FORWARD_SPEED);
+        leftBackDrive.setPower(FORWARD_SPEED);
+        rightBackDrive.setPower(-FORWARD_SPEED);
+        runtime.reset();
+        while (opModeIsActive() && (runtime.seconds() < .8)) {
+            telemetry.addData(".8 Seconds Turn", "Leg 10: %4.1f S Elapsed", runtime.seconds());
+            telemetry.update();
+        }
+
+
 
 //        // Step 2:  Spin right for 1.3 seconds
 //        leftDrive.setPower(TURN_SPEED);
