@@ -137,9 +137,9 @@ public class AutoTimebutWorks extends LinearOpMode {
 
         // Wait for the game to start (driver presses START)
         waitForStart();
-        drive(1, 2, 10, "drive backwards", "1");
+        drive(-1, 2, 2000, "drive backwards", "1");
         turn(1, 45,10, "turning 45 degrees", "2");
-        drive(1, 2,0, "drive off the line", "3");
+        drive(1, 1.25,0, "drive off the line", "3");
 
         // Step through each leg of the path, ensuring that the OpMode has not been stopped along the way.
 
