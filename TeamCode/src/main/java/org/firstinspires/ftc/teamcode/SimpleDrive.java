@@ -18,7 +18,6 @@ import com.qualcomm.robotcore.util.Range;
         private DcMotor intakeForward = null;
         private DcMotor intakeBack = null;
 
-        boolean shooterPowerControl = true;
         double shooterVelocity = 0;
 
 
@@ -122,7 +121,7 @@ import com.qualcomm.robotcore.util.Range;
             if (gamepad2.left_trigger > 0.5) {
                 intakeForward.setPower(1);
             }
-            else if (gamepad2.left_bumper) {
+            else if (gamepad2.left_bumper && shooter.getVelocity() > 1399) {
                 intakeBack.setPower(1);
             }
             else if (gamepad2.left_bumper && gamepad2.left_trigger > 0.5) {
@@ -171,9 +170,10 @@ import com.qualcomm.robotcore.util.Range;
 
             // telemetry
             telemetry.addData("left front motor expected", "power = %.2f", leftFrontPower);
-            telemetry.addData("right front motor expected", "Power = %.2f", rightFrontPower);
-            telemetry.addData("left rear motor expected", "Power = %.2f", leftBackPower);
-            telemetry.addData("right rear motor expected", "Power = %.2f", rightBackPower);
+            telemetry.addData("right front motor expected", "power = %.2f", rightFrontPower);
+            telemetry.addData("left rear motor expected", "power = %.2f", leftBackPower);
+            telemetry.addData("right rear motor expected", "power = %.2f", rightBackPower);
+            telemetry.addData("shooter velocity", "velocity = %.2f", shooter.getVelocity());
         }
 
 
