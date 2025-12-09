@@ -30,11 +30,10 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 /*
  * This OpMode illustrates the concept of driving a path based on time.
@@ -55,17 +54,19 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
  * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list
  */
 
-@Autonomous(name="functioning auto (McTickerV2)", group="Robot")
+@Autonomous(name="functioning auto (large triangle)", group="Robot")
 
-public class AutoTimebutWorks extends LinearOpMode {
+public class auto_large_triangle extends LinearOpMode {
 
     /* Declare OpMode members. */
     private DcMotor leftFrontDrive = null;
     private DcMotor leftBackDrive = null;
     private DcMotor rightFrontDrive = null;
     private DcMotor rightBackDrive = null;
-
-    private ElapsedTime     runtime = new ElapsedTime();
+    private DcMotorEx shooter = null;
+    private DcMotor frontIntake = null;
+    private DcMotor backIntake = null;
+    private final ElapsedTime     runtime = new ElapsedTime();
 
 
     static final double     FORWARD_SPEED = 0.3;
@@ -104,6 +105,27 @@ public class AutoTimebutWorks extends LinearOpMode {
         sleep(sleeptime);
     }
 
+    public void shoot(int velocity, int runtime, int sleeptime,String caption,String leg)
+    {shooter.setVelocity(velocity);
+        sleep(3000);
+        frontIntake.setPower(-0.8);
+        backIntake.setPower(-0.8);
+        sleep(runtime);
+        shooter.setPower(0);
+        frontIntake.setPower(0);
+        backIntake.setPower(0);
+        sleep(sleeptime);
+    }
+    public void intake(int runtime, int sleeptime,String caption,String leg)
+    {
+        frontIntake.setPower(1);
+        sleep(runtime);
+        frontIntake.setPower(0);
+        sleep(sleeptime);
+
+
+    }
+
     @Override
     public void runOpMode() {
 
@@ -112,7 +134,9 @@ public class AutoTimebutWorks extends LinearOpMode {
         rightFrontDrive = hardwareMap.get(DcMotor.class, "right_front");
         leftBackDrive = hardwareMap.get(DcMotor.class, "left_back");
         rightBackDrive = hardwareMap.get(DcMotor.class, "right_back");
-
+        shooter = hardwareMap.get(DcMotorEx.class, "shooter");
+        frontIntake = hardwareMap.get(DcMotor.class, "intakeForward");
+        backIntake = hardwareMap.get(DcMotor.class, "intakeBack");
         // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
         // When run, this OpMode should start both motors driving forward. So adjust these two lines based on your first test drive.
         // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
@@ -120,6 +144,7 @@ public class AutoTimebutWorks extends LinearOpMode {
         leftBackDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightBackDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        shooter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
         rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
@@ -138,6 +163,7 @@ public class AutoTimebutWorks extends LinearOpMode {
         // Wait for the game to start (driver presses START)
         waitForStart();
         drive(-1, 2, 2000, "drive backwards", "1");
+        shoot(-1600, 3000, 0, "shoot", "3");
         turn(1, 45,10, "turning 45 degrees", "2");
         drive(1, 1.25,0, "drive off the line", "3");
 
