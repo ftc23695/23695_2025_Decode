@@ -1,220 +1,219 @@
-/* Copyright (c) 2023 FIRST. All rights reserved.
- *
- * Redistribution and use in source and binary forms, with or without modification,
- * are permitted (subject to the limitations in the disclaimer below) provided that
- * the following conditions are met:
- *
- * Redistributions of source code must retain the above copyright notice, this list
- * of conditions and the following disclaimer.
- *
- * Redistributions in binary form must reproduce the above copyright notice, this
- * list of conditions and the following disclaimer in the documentation and/or
- * other materials provided with the distribution.
- *
- * Neither the name of FIRST nor the names of its contributors may be used to endorse or
- * promote products derived from this software without specific prior written permission.
- *
- * NO EXPRESS OR IMPLIED LICENSES TO ANY PARTY'S PATENT RIGHTS ARE GRANTED BY THIS
- * LICENSE. THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
- * THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE
- * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
- * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- */
-
 package org.firstinspires.ftc.teamcode;
 
-import android.util.Size;
-
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.hardware.limelightvision.Limelight3A;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.util.Range;
+import com.qualcomm.hardware.limelightvision.LLResult;
+import com.qualcomm.hardware.limelightvision.LLResultTypes;
+import com.qualcomm.hardware.limelightvision.LLStatus;
+import com.qualcomm.hardware.limelightvision.Limelight3A;
 
-import org.firstinspires.ftc.robotcore.external.hardware.camera.BuiltinCameraDirection;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.vision.VisionPortal;
-import org.firstinspires.ftc.vision.apriltag.AprilTagDetection;
-import org.firstinspires.ftc.vision.apriltag.AprilTagProcessor;
+@TeleOp
+public class AprilTagTesting extends OpMode
+{
+    private DcMotor leftFrontDrive = null;
+    private DcMotor leftBackDrive = null;
+    private DcMotor rightFrontDrive = null;
+    private DcMotor rightBackDrive = null;
+    private DcMotorEx shooter = null;
+    private DcMotor intakeForward = null;
+    private DcMotor intakeBack = null;
+    private Limelight3A limelight = null;
 
-import java.util.List;
 
-/*
- * This OpMode illustrates the basics of AprilTag recognition and pose estimation,
- * including Java Builder structures for specifying Vision parameters.
- *
- * For an introduction to AprilTags, see the FTC-DOCS link below:
- * https://ftc-docs.firstinspires.org/en/latest/apriltag/vision_portal/apriltag_intro/apriltag-intro.html
- *
- * In this sample, any visible tag ID will be detected and displayed, but only tags that are included in the default
- * "TagLibrary" will have their position and orientation information displayed.  This default TagLibrary contains
- * the current Season's AprilTags and a small set of "test Tags" in the high number range.
- *
- * When an AprilTag in the TagLibrary is detected, the SDK provides location and orientation of the tag, relative to the camera.
- * This information is provided in the "ftcPose" member of the returned "detection", and is explained in the ftc-docs page linked below.
- * https://ftc-docs.firstinspires.org/apriltag-detection-values
- *
- * To experiment with using AprilTags to navigate, try out these two driving samples:
- * RobotAutoDriveToAprilTagOmni and RobotAutoDriveToAprilTagTank
- *
- * There are many "default" VisionPortal and AprilTag configuration parameters that may be overridden if desired.
- * These default parameters are shown as comments in the code below.
- *
- * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this OpMode to the Driver Station OpMode list.
- */
-@TeleOp(name = "Concept: AprilTag", group = "Concept")
+    double shooterVelocity = 0;
 
-public class AprilTagTesting extends LinearOpMode {
-
-    private static final boolean USE_WEBCAM = true;  // true for webcam, false for phone camera
-
-    /**
-     * The variable to store our instance of the AprilTag processor.
-     */
-    private AprilTagProcessor aprilTag;
-
-    /**
-     * The variable to store our instance of the vision portal.
-     */
-    private VisionPortal visionPortal;
 
     @Override
-    public void runOpMode() {
+    public void init() {
+        //Declare variables for phone to recognise//
 
-        initAprilTag();
+        //names on the config
 
-        // Wait for the DS start button to be touched.
-        telemetry.addData("DS preview on/off", "3 dots, Camera Stream");
-        telemetry.addData(">", "Touch START to start OpMode");
-        telemetry.update();
-        waitForStart();
+        leftFrontDrive = hardwareMap.get(DcMotor.class, "left_front");
+        rightFrontDrive = hardwareMap.get(DcMotor.class, "right_front");
+        leftBackDrive = hardwareMap.get(DcMotor.class, "left_back");
+        rightBackDrive = hardwareMap.get(DcMotor.class, "right_back");
+        shooter = hardwareMap.get(DcMotorEx.class, "shooter");
+        intakeForward = hardwareMap.get(DcMotor.class, "intakeForward");
+        intakeBack = hardwareMap.get(DcMotor.class, "intakeBack");
+        limelight = hardwareMap.get(Limelight3A.class, "limelight");
 
-        if (opModeIsActive()) {
-            while (opModeIsActive()) {
 
-                telemetryAprilTag();
 
-                // Push telemetry to the Driver Station.
-                telemetry.update();
+        //other motor initializing
 
-                // Save CPU resources; can resume streaming when needed.
-                if (gamepad1.dpad_down) {
-                    visionPortal.stopStreaming();
-                } else if (gamepad1.dpad_up) {
-                    visionPortal.resumeStreaming();
-                }
+        leftFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftBackDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightFrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightBackDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        shooter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        intakeForward.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        intakeBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-                // Share the CPU.
-                sleep(20);
-            }
+
+        leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
+        rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
+        leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
+        rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
+        shooter.setDirection(DcMotor.Direction.REVERSE);
+        intakeForward.setDirection(DcMotor.Direction.REVERSE);
+        intakeBack.setDirection(DcMotor.Direction.REVERSE);
+
+
+        leftFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightBackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        shooter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        intakeForward.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        intakeBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+
+        telemetry.addData("status", "Initialized");
+    }
+
+
+    //Set variables//
+    @Override
+    public void loop() {
+        // drive variables
+        double leftFrontPower;
+        double rightFrontPower;
+        double leftBackPower;
+        double rightBackPower;
+
+        LLResult result = limelight.getLatestResult();
+        limelight.start();
+        double tx = result.getTx();
+        String limelight_telemetry = "Limelight Data";
+        int pipeline = result.getPipelineIndex();
+//      y
+//   x     b   << controller button layout
+//      a
+        // joystick controls
+        double drive = -gamepad1.left_stick_y;
+        double strafe = gamepad1.left_stick_x;
+        double turn = gamepad1.right_stick_x;
+        // making sure power doesnt exceed 100% and adding and subtracting variables to
+        // get individual motor power levels
+        leftFrontPower = Range.clip(drive + turn + strafe, -1, 1);
+        rightFrontPower = Range.clip(drive - turn - strafe, -1, 1);
+        leftBackPower = Range.clip(drive + turn - strafe, -1, 1);
+        rightBackPower = Range.clip(drive - turn + strafe, -1, 1);
+        // dividing power if right bumper is pressed
+        if(gamepad1.right_trigger > 0.5){
+            leftFrontPower /= 2;
+            leftBackPower /= 2;
+            rightFrontPower /= 2;
+            rightBackPower /= 2;
+        } else if(gamepad1.left_trigger > 0.5){
+            leftFrontPower /= 4;
+            leftBackPower /= 4;
+            rightFrontPower /= 4;
+            rightBackPower /= 4;
         }
 
-        // Save more CPU resources when camera is no longer needed.
-        visionPortal.close();
+        // shooter controls
+        if (gamepad2.right_trigger > 0.5) {
+            shooterVelocity = 1800;
+        } else if (gamepad2.right_bumper) {
+            shooterVelocity = 1400;
+        }
+        else {
+            shooterVelocity = 0;
+        }
+//            if (gamepad1.dpad_down) {
+//                shooterVelocity = 0;
+//            }
 
-    }   // end method runOpMode()
-
-    /**
-     * Initialize the AprilTag processor.
-     */
-    private void initAprilTag() {
-
-        // Create the AprilTag processor.
-        aprilTag = new AprilTagProcessor.Builder()
-
-            // The following default settings are available to un-comment and edit as needed.
-            //.setDrawAxes(false)
-            //.setDrawCubeProjection(false)
-            //.setDrawTagOutline(true)
-            //.setTagFamily(AprilTagProcessor.TagFamily.TAG_36h11)
-            //.setTagLibrary(AprilTagGameDatabase.getCenterStageTagLibrary())
-            //.setOutputUnits(DistanceUnit.INCH, AngleUnit.DEGREES)
-
-            // == CAMERA CALIBRATION ==
-            // If you do not manually specify calibration parameters, the SDK will attempt
-            // to load a predefined calibration for your camera.
-            //.setLensIntrinsics(578.272, 578.272, 402.145, 221.506)
-            // ... these parameters are fx, fy, cx, cy.
-
-            .build();
-
-        // Adjust Image Decimation to trade-off detection-range for detection-rate.
-        // eg: Some typical detection data using a Logitech C920 WebCam
-        // Decimation = 1 ..  Detect 2" Tag from 10 feet away at 10 Frames per second
-        // Decimation = 2 ..  Detect 2" Tag from 6  feet away at 22 Frames per second
-        // Decimation = 3 ..  Detect 2" Tag from 4  feet away at 30 Frames Per Second (default)
-        // Decimation = 3 ..  Detect 5" Tag from 10 feet away at 30 Frames Per Second (default)
-        // Note: Decimation can be changed on-the-fly to adapt during a match.
-        aprilTag.setDecimation(3);
-
-        // Create the vision portal by using a builder.
-        VisionPortal.Builder builder = new VisionPortal.Builder();
-
-        // Set the camera (webcam vs. built-in RC phone camera).
-        if (USE_WEBCAM) {
-            builder.setCamera(hardwareMap.get(WebcamName.class, "Webcam 1"));
+        // intake and transfer controls
+        if (gamepad2.left_trigger > 0.5) {
+            intakeForward.setPower(1);
+        }
+        else if (gamepad2.left_bumper && shooter.getVelocity() > 1399) {
+            intakeBack.setPower(1);
+        }
+        else if (gamepad2.left_bumper && gamepad2.left_trigger > 0.5) {
+            intakeForward.setPower(1);
+            intakeBack.setPower(1);
+        }
+        else if (gamepad2.dpad_down) {
+            intakeForward.setPower(-1);
+            intakeBack.setPower(-1);
         } else {
-            builder.setCamera(BuiltinCameraDirection.BACK);
+            intakeForward.setPower(0);
+            intakeBack.setPower(0);
+        } // old shooter controls, keep commented out for now
+//            if (shooterPowerControl && gamepad1.y && shooterVelocity != 0) {
+//                shooterVelocity += 280;
+//                shooterPowerControl = false;
+//            } else if (shooterPowerControl && gamepad1.a && shooterVelocity != 2800) {
+//                shooterVelocity -= 280;
+//                shooterPowerControl = false;
+//            } else if (!gamepad1.a && !gamepad1.y) {
+//                shooterPowerControl = true;
+//            }
+        // self destruct button
+        if ((gamepad1.a && gamepad1.b && gamepad1.x && gamepad1.y) || (gamepad2.a && gamepad2.b && gamepad2.x && gamepad2.y)) {
+            leftFrontDrive.setPower(0);
+            rightFrontDrive.setPower(0);
+            leftBackDrive.setPower(0);
+            rightBackDrive.setPower(0);
+            shooter.setVelocity(0);
+            intakeForward.setPower(0);
+            intakeBack.setPower(0);
+            limelight.stop();
+            terminateOpModeNow();
+
+        }
+        //limelight stuff
+        long staleness = result.getStaleness();
+        if (staleness < 100) {
+            telemetry.addData("data", "good");
+        } else {
+            telemetry.addData("data", "bad (" + staleness + " ms)");
         }
 
-        // Choose a camera resolution. Not all cameras support all resolutions.
-        builder.setCameraResolution(new Size(640, 480));
 
-        // Enable the RC preview (LiveView).  Set "false" to omit camera monitoring.
-        builder.enableLiveView(true);
+        //setting final power levels
+        leftFrontDrive.setPower(leftFrontPower);
+        rightFrontDrive.setPower(rightFrontPower);
+        leftBackDrive.setPower(leftBackPower);
+        rightBackDrive.setPower(rightBackPower);
+        shooter.setVelocity(shooterVelocity);
 
+        //Claw Code: Opens with GP2 X and opens less when past vertical position
+        // BIGGER CLOSES MORE*********************
 
-        // Set the stream format; MJPEG uses less bandwidth than default YUY2.
-        //builder.setStreamFormat(VisionPortal.StreamFormat.YUY2);
-
-        // Choose whether or not LiveView stops if no processors are enabled.
-        // If set "true", monitor shows solid orange screen if no processors enabled.
-        // If set "false", monitor shows camera view without annotations.
-        builder.setAutoStopLiveView(true);
-
-        // Set and enable the processor.
-        builder.addProcessor(aprilTag);
-
-        // Build the Vision Portal, using the above settings.
-        visionPortal = builder.build();
-
-        // Disable or re-enable the aprilTag processor at any time.
-        //visionPortal.setProcessorEnabled(aprilTag, true);
-
-    }   // end method initAprilTag()
+        // telemetry
+        telemetry.addData("left front motor expected", "power = %.2f", leftFrontPower);
+        telemetry.addData("right front motor expected", "power = %.2f", rightFrontPower);
+        telemetry.addData("left rear motor expected", "power = %.2f", leftBackPower);
+        telemetry.addData("right rear motor expected", "power = %.2f", rightBackPower);
+        telemetry.addData("shooter velocity", "velocity = %.2f", shooter.getVelocity());
+        telemetry.addData("", limelight_telemetry);
+        telemetry.addData("limelight x = ", tx);
+        telemetry.addData("limelight pipeline = ", pipeline);
+    }
 
 
-    /**
-     * Add telemetry about AprilTag detections.
-     */
-    private void telemetryAprilTag() {
+    @Override
+    public void stop() {
+        leftFrontDrive.setPower(0);
+        rightFrontDrive.setPower(0);
+        leftBackDrive.setPower(0);
+        rightBackDrive.setPower(0);
+        shooter.setPower(0);
+        intakeForward.setPower(0);
+        limelight.stop();
 
-        List<AprilTagDetection> currentDetections = aprilTag.getDetections();
-        telemetry.addData("# AprilTags Detected", currentDetections.size());
 
-        // Step through the list of detections and display info for each one.
-        for (AprilTagDetection detection : currentDetections) {
-            if (detection.metadata != null) {
-                telemetry.addLine(String.format("\n==== (ID %d) %s", detection.id, detection.metadata.name));
-                telemetry.addLine(String.format("XYZ %6.1f %6.1f %6.1f  (inch)", detection.ftcPose.x, detection.ftcPose.y, detection.ftcPose.z));
-                telemetry.addLine(String.format("PRY %6.1f %6.1f %6.1f  (deg)", detection.ftcPose.pitch, detection.ftcPose.roll, detection.ftcPose.yaw));
-                telemetry.addLine(String.format("RBE %6.1f %6.1f %6.1f  (inch, deg, deg)", detection.ftcPose.range, detection.ftcPose.bearing, detection.ftcPose.elevation));
-            } else {
-                telemetry.addLine(String.format("\n==== (ID %d) Unknown", detection.id));
-                telemetry.addLine(String.format("Center %6.0f %6.0f   (pixels)", detection.center.x, detection.center.y));
-            }
-        }   // end for() loop
+    }
 
-        // Add "key" information to telemetry
-        telemetry.addLine("\nkey:\nXYZ = X (Right), Y (Forward), Z (Up) dist.");
-        telemetry.addLine("PRY = Pitch, Roll & Yaw (XYZ Rotation)");
-        telemetry.addLine("RBE = Range, Bearing & Elevation");
+}
 
-    }   // end method telemetryAprilTag()
-
-}   // end class
