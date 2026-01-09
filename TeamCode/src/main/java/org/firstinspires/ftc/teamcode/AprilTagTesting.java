@@ -1,16 +1,23 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.limelightvision.Limelight3A;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.util.Range;
 import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.hardware.limelightvision.LLResultTypes;
 import com.qualcomm.hardware.limelightvision.LLStatus;
 import com.qualcomm.hardware.limelightvision.Limelight3A;
+
+import org.firstinspires.ftc.robotcore.external.navigation.Pose3D;
+import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
+
+import java.util.List;
 
 @TeleOp
 public class AprilTagTesting extends OpMode
@@ -23,7 +30,7 @@ public class AprilTagTesting extends OpMode
     private DcMotor intakeForward = null;
     private DcMotor intakeBack = null;
     private Limelight3A limelight = null;
-
+    private IMU imu; //emu
 
     double shooterVelocity = 0;
 
@@ -42,8 +49,11 @@ public class AprilTagTesting extends OpMode
         intakeForward = hardwareMap.get(DcMotor.class, "intakeForward");
         intakeBack = hardwareMap.get(DcMotor.class, "intakeBack");
         limelight = hardwareMap.get(Limelight3A.class, "limelight");
-
-
+        limelight.pipelineSwitch(8); //tag#11 pipeline
+        imu = hardwareMap.get(IMU.class, "imu");
+        RevHubOrientationOnRobot revHubOrientationOnRobot = new RevHubOrientationOnRobot(RevHubOrientationOnRobot.LogoFacingDirection.UP,
+                RevHubOrientationOnRobot.UsbFacingDirection.FORWARD);
+        imu.initialize(new IMU.Parameters(revHubOrientationOnRobot));
 
         //other motor initializing
 
@@ -81,6 +91,13 @@ public class AprilTagTesting extends OpMode
     //Set variables//
     @Override
     public void loop() {
+        YawPitchRollAngles orientation = imu.getRobotYawPitchRollAngles();
+        limelight.updateRobotOrientation(orientation.getYaw());
+        LLResult llResult = limelight.getLatestResult();
+        if (llResult != null && llResult.isValid()) {
+        Pose3D botPose =llResult.getBotpose_MT2();
+        }
+
         // drive variables
         double leftFrontPower;
         double rightFrontPower;
@@ -92,13 +109,35 @@ public class AprilTagTesting extends OpMode
         double tx = result.getTx();
         String limelight_telemetry = "Limelight Data";
         int pipeline = result.getPipelineIndex();
+        double turningPower;
+        if (!gamepad1.dpad_down){
+            turningPower = gamepad1.right_stick_x;
+        }
+        else if ((result.getStaleness() < 100) && (llResult != null && llResult.isValid()) && tx  < 1 && tx > -1)
+            turningPower = 0;
+        else if (tx > 1 && tx < 10){
+            turningPower = 0.5;
+        }
+        else if (tx < -1 && tx > -10){
+            turningPower = -0.5;
+        }
+        else if (tx > 10 && tx < 50){
+            turningPower = 1;
+        }
+        else if (tx < -10 && tx > -50){
+            turningPower = -1;
+        }
+        else {
+            turningPower = 0;
+        }
+
 //      y
 //   x     b   << controller button layout
 //      a
         // joystick controls
         double drive = -gamepad1.left_stick_y;
         double strafe = gamepad1.left_stick_x;
-        double turn = gamepad1.right_stick_x;
+        double turn = turningPower;
         // making sure power doesnt exceed 100% and adding and subtracting variables to
         // get individual motor power levels
         leftFrontPower = Range.clip(drive + turn + strafe, -1, 1);
@@ -199,6 +238,10 @@ public class AprilTagTesting extends OpMode
         telemetry.addData("", limelight_telemetry);
         telemetry.addData("limelight x = ", tx);
         telemetry.addData("limelight pipeline = ", pipeline);
+        List<LLResultTypes.FiducialResult> fiducialResults = result.getFiducialResults();
+        for (LLResultTypes.FiducialResult fr : fiducialResults) {
+            telemetry.addData("tag ", "ID: %d", fr.getFiducialId());
+        }
     }
 
 
