@@ -17,6 +17,7 @@ import com.qualcomm.robotcore.util.Range;
         private DcMotorEx shooter = null;
         private DcMotor intakeForward = null;
         private DcMotor intakeBack = null;
+        private DcMotor turret = null;
 
         double shooterVelocity = 0;
 
@@ -34,6 +35,7 @@ import com.qualcomm.robotcore.util.Range;
             shooter = hardwareMap.get(DcMotorEx.class, "shooter");
             intakeForward = hardwareMap.get(DcMotor.class, "intakeForward");
             intakeBack = hardwareMap.get(DcMotor.class, "intakeBack");
+            turret = hardwareMap.get(DcMotor.class, "turret");
 
 
             //other motor initializing
@@ -45,6 +47,7 @@ import com.qualcomm.robotcore.util.Range;
             shooter.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             intakeForward.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
             intakeBack.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            turret.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
 
             leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
@@ -54,6 +57,7 @@ import com.qualcomm.robotcore.util.Range;
             shooter.setDirection(DcMotor.Direction.REVERSE);
             intakeForward.setDirection(DcMotor.Direction.REVERSE);
             intakeBack.setDirection(DcMotor.Direction.REVERSE);
+            turret.setDirection(DcMotor.Direction.FORWARD);
 
 
             leftFrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -63,6 +67,7 @@ import com.qualcomm.robotcore.util.Range;
             shooter.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             intakeForward.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
             intakeBack.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            turret.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
 
             telemetry.addData("status", "Initialized");
@@ -134,7 +139,12 @@ import com.qualcomm.robotcore.util.Range;
             } else {
                 intakeForward.setPower(0);
                 intakeBack.setPower(0);
-            } // old shooter controls, keep commented out for now
+            }
+            // turret code
+            if (gamepad2.left_stick_x > 0.05 || gamepad2.left_stick_x < -0.05){
+                turret.setPower(gamepad2.left_stick_x / 2);
+            }
+            // old shooter controls, keep commented out for now
 //            if (shooterPowerControl && gamepad1.y && shooterVelocity != 0) {
 //                shooterVelocity += 280;
 //                shooterPowerControl = false;
