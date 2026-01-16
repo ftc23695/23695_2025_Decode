@@ -50,7 +50,7 @@ import com.qualcomm.robotcore.util.Range;
             turret.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
 
-            leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
+            leftFrontDrive.setDirection(DcMotor.Direction.FORWARD);
             rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
             leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
             rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
@@ -143,6 +143,8 @@ import com.qualcomm.robotcore.util.Range;
             // turret code
             if (gamepad2.left_stick_x > 0.05 || gamepad2.left_stick_x < -0.05){
                 turret.setPower(gamepad2.left_stick_x / 2);
+            } else {
+                turret.setPower(0);
             }
             // old shooter controls, keep commented out for now
 //            if (shooterPowerControl && gamepad1.y && shooterVelocity != 0) {
